@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ImpHunter.GameStates;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -21,11 +22,14 @@ namespace DonkeyKong
         protected override void LoadContent()
         {
             base.LoadContent();
-            Screen = new Point(800, 600);
+            Screen = new Point(800, 800);
             ApplyResolutionSettings();
 
             // TODO: use this.Content to load your game content here
+            GameStateManager.AddGameState("Level1", new Level1());
+            
 
+            GameStateManager.SwitchTo("Level1");
         }
         
     }
