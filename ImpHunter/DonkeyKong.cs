@@ -2,14 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ImpHunter
+namespace DonkeyKong
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class ImpHunter : GameEnvironment
+    public class DonkeyKong : GameEnvironment
     {
-        public ImpHunter()
+        public DonkeyKong()
         {
             Content.RootDirectory = "Content";
         }

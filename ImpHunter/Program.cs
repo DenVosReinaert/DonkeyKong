@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ImpHunter
+namespace DonkeyKong
 {
 #if WINDOWS || LINUX
     /// <summary>
@@ -14,7 +14,7 @@ namespace ImpHunter
         [STAThread]
         static void Main()
         {
-            using (var game = new ImpHunter())
+            using (var game = new DonkeyKong())
                 game.Run();
         }
     }
