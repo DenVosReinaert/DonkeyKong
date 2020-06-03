@@ -32,14 +32,14 @@ namespace ImpHunter.GameStates
 
             foreach(Platform platform in basePlatformRow.Children.Concat(finishPlatformRow.Children).Concat(platformRows.Children))
             {
-                if (player.CollidesWith(platform) && player.Position.Y + player.Sprite.Height < platform.Position.Y + 5)
+                if (platform.CollidesWith(player))
                 {
                     player.grounded = true;
-                    player.Position = new Vector2(player.Position.X, platform.Position.Y - player.Sprite.Height);
-                    //player.gravity = 0;
                 }
-                //else player.grounded = false;
+                else 
+                    player.grounded = false;
             }
+
         }
 
     }
