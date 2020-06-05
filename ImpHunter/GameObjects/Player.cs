@@ -21,7 +21,7 @@ namespace ImpHunter.GameObjects
             moveSpeed = 2;
             jumpForce = 4;
 
-            position = new Vector2(0, 700);
+            position = new Vector2(0, 500);
         }
 
         public override void Update(GameTime gameTime)
@@ -31,6 +31,11 @@ namespace ImpHunter.GameObjects
             position.X = MathHelper.Clamp(position.X, 0, GameEnvironment.Screen.X - Sprite.Width);
 
             position += moveDir * moveSpeed;
+
+            if(grounded)
+            {
+                gravity = 0;
+            }
 
             if (!climbing && !grounded)
             {

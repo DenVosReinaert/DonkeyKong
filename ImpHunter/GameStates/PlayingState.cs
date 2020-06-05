@@ -1,15 +1,11 @@
 ﻿using ImpHunter.GameObjects;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImpHunter.GameStates
 {
 
-     public class PlayingState : GameObjectList
+    public class PlayingState : GameObjectList
     {
         public GameObjectList basePlatformRow;
         public GameObjectList platformRows;
@@ -30,16 +26,43 @@ namespace ImpHunter.GameStates
         {
             base.Update(gameTime);
 
-            foreach(Platform platform in basePlatformRow.Children.Concat(finishPlatformRow.Children).Concat(platformRows.Children))
+
+            if (CollidesWithPlatform(player, out float collidedY))
             {
-                if (platform.CollidesWith(player))
-                {
-                    player.grounded = true;
-                }
-                else 
-                    player.grounded = false;
+                player.grounded = true;
             }
 
+
+
+            foreach (Platform platform in basePlatformRow.Children.Concat(finishPlatformRow.Children).Concat(platformRows.Children))
+                if (player.CollidesWith(platform) && player.Position.Y + player.Sprite.Height > platform.Position.Y && player.Position.Y + player.Sprite.Height < platform.Position.Y + platform.Sprite.Height)
+                {
+                    player.Position = new Vector2(player.Position.X, platform.Position.Y - player.Sprite.Height);
+                    player.grounded = true;
+                }
+
+            player.grounded = false;
+        }
+
+        private bool CollidesWithPlatform(SpriteGameObject obj, out float collidedY)
+        {
+
+            bool collided = false;
+
+            collidedY = 0;
+
+            foreach (Platform platform in basePlatformRow.Children.Concat(finishPlatformRow.Children).Concat(platformRows.Children))
+            {
+                if (obj.CollidesWith(platform) && obj.Position.Y + obj.Sprite.Height - 10 < platform.Position.Y)
+                {
+                    collided = true;
+                    collidedY = platform.Position.Y;
+
+                    obj.gravity = 0;
+                }
+            }
+
+            return collided;
         }
 
     }
