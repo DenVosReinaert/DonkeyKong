@@ -59,6 +59,8 @@
     <Compile Include="GameManagement\SpriteSheet.cs" />
     <Compile Include="GameManagement\TextGameObject.cs" />
     <Compile Include="DonkeyKong.cs" />
+    <Compile Include="GameObjects\Enemy.cs" />
+    <Compile Include="GameObjects\ObjectPool.cs" />
     <Compile Include="GameObjects\Platform.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Projectile.cs" />
@@ -75,6 +77,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\boss-temp.png" />
+    <Content Include="Content\ladder-temp.png" />
     <Content Include="Content\platform-temp.png" />
     <Content Include="Content\player-temp.png" />
     <Content Include="Content\projectile-temp.png" />

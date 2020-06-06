@@ -34,7 +34,7 @@ namespace ImpHunter.GameStates
 
             Add(player = new Player(new Vector2(0, 500)));
 
-            projectiles.Add(projectile = new Projectile(new Vector2(20, 100)));
+            //projectiles.Add(projectile = new Projectile(new Vector2(20, 100)));
         }
 
         public override void Update(GameTime gameTime)

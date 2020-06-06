@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ImpHunter.GameObjects
 {
-    class Projectile : RotatingSpriteGameObject
+    public class Projectile : RotatingSpriteGameObject
     {
         private float moveSpeed;
 

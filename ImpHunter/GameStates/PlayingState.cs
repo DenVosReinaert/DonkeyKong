@@ -12,24 +12,48 @@ namespace ImpHunter.GameStates
         public GameObjectList platformRows;
         public GameObjectList finishPlatformRow;
 
-        public GameObjectList projectiles;
+        public GameObjectList ladders;
+
+
 
         public Player player;
+        public Projectile projectile;
+
+        #region Object Pooler & Object Pools
+        public ObjectPool objectPooler;
+
+        #region Object Pools
+        public ObjectPool.Pool projectiles;
+        #endregion
+        #endregion
 
         public PlayingState()
         {
+            objectPooler = new ObjectPool();
+
+            #region Projectile Pool
+            objectPooler.objPools.Add(projectiles = new ObjectPool.Pool());
+            //---------------------------------------------------------------------------------
+            projectiles.tag = "projectile";
+            projectiles.size = 20;
+            projectiles.prefab = (projectile as SpriteGameObject);
+            #endregion
+
+            #region GameObjectLists
             Add(basePlatformRow = new GameObjectList());
             Add(platformRows = new GameObjectList());
             Add(finishPlatformRow = new GameObjectList());
 
-            Add(projectiles = new GameObjectList());
+            Add(ladders = new GameObjectList());
+
+            #endregion
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-
+            #region Player & Projectile Platfrom Collision
             if (CollidesWithPlatform(player, out float collidedY))
             {
                 player.grounded = true;
@@ -38,16 +62,16 @@ namespace ImpHunter.GameStates
 
 
 
-            foreach (Projectile projectile in projectiles.Children)
+            foreach (GameObject projectile in projectiles.objectPool)
             {
-                if (CollidesWithPlatform(projectile, out float collidedY2))
+                if (CollidesWithPlatform(projectile as RotatingSpriteGameObject, out float collidedY2))
                 {
                     projectile.grounded = true;
                 }
                 else projectile.grounded = false;
 
 
-                if(projectile.CollidesWith(player))
+                if((projectile as RotatingSpriteGameObject).CollidesWith(player) && projectile.Visible)
                 {
                     Console.WriteLine("Get Fucked!");
                 }
@@ -63,16 +87,16 @@ namespace ImpHunter.GameStates
                     player.grounded = true;
                 }
 
-                foreach (Projectile projectile in projectiles.Children)
-                    if (projectile.CollidesWith(platform) && projectile.Position.Y + projectile.Sprite.Height/2 > platform.Position.Y && projectile.Position.Y + projectile.Sprite.Height/2 < platform.Position.Y + platform.Sprite.Height)
+                foreach (GameObject projectile in projectiles.objectPool)
+                    if ((projectile as RotatingSpriteGameObject).CollidesWith(platform) && projectile.Position.Y + (projectile as RotatingSpriteGameObject).Sprite.Height/2 > platform.Position.Y && projectile.Position.Y + (projectile as RotatingSpriteGameObject).Sprite.Height/2 < platform.Position.Y + platform.Sprite.Height)
                     {
-                        projectile.Position = new Vector2(projectile.Position.X, platform.Position.Y - projectile.Sprite.Height/2 + 1);
+                        projectile.Position = new Vector2(projectile.Position.X, platform.Position.Y - (projectile as RotatingSpriteGameObject).Sprite.Height/2 + 1);
                         projectile.grounded = true;
                     }
 
             }
 
-
+            #endregion
         }
 
         private bool CollidesWithPlatform(SpriteGameObject obj, out float collidedY)
