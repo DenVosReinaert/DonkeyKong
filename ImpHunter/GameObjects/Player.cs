@@ -15,7 +15,6 @@ namespace ImpHunter.GameObjects
         private float jumpForce;
 
         public bool climbing = false;
-        public bool grounded = false;
         public Player() : base("player-temp")
         {
             moveSpeed = 2;

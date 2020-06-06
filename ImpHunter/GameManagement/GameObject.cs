@@ -9,6 +9,8 @@ public abstract class GameObject : IGameLoopObject
     protected string id;
     protected bool visible;
 
+    public bool grounded;
+
     public GameObject(int layer = 0, string id = "")
     {
         this.layer = layer;

@@ -61,6 +61,7 @@
     <Compile Include="DonkeyKong.cs" />
     <Compile Include="GameObjects\Platform.cs" />
     <Compile Include="GameObjects\Player.cs" />
+    <Compile Include="GameObjects\Projectile.cs" />
     <Compile Include="GameStates\Level1.cs" />
     <Compile Include="GameStates\PlayingState.cs" />
     <Compile Include="Program.cs" />
@@ -76,6 +77,7 @@
   <ItemGroup>
     <Content Include="Content\platform-temp.png" />
     <Content Include="Content\player-temp.png" />
+    <Content Include="Content\projectile-temp.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

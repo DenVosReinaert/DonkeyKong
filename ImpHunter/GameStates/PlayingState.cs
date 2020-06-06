@@ -11,6 +11,8 @@ namespace ImpHunter.GameStates
         public GameObjectList platformRows;
         public GameObjectList finishPlatformRow;
 
+        public GameObjectList projectiles;
+
         Player player;
 
         public PlayingState()
@@ -18,6 +20,8 @@ namespace ImpHunter.GameStates
             Add(basePlatformRow = new GameObjectList());
             Add(platformRows = new GameObjectList());
             Add(finishPlatformRow = new GameObjectList());
+
+            Add(projectiles = new GameObjectList());
 
             Add(player = new Player());
         }
@@ -32,6 +36,17 @@ namespace ImpHunter.GameStates
                 player.grounded = true;
             }
             else player.grounded = false;
+
+
+
+            foreach(Projectile projectile in projectiles.Children)
+            {
+                if (CollidesWithPlatform(projectile, out float collidedY2))
+                {
+                    projectile.grounded = true;
+                }
+                else projectile.grounded = false;
+            }
 
 
 
