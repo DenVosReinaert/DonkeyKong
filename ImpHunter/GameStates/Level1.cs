@@ -35,19 +35,13 @@ namespace ImpHunter.GameStates
             }
 
             Add(player = new Player(new Vector2(0, 500)));
+
+            projectiles.Add(projectile = new Projectile(new Vector2(20,100)));
         }
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-
-            frameCount++;
-
-            if (frameCount > 60)
-            {
-                objectPooler.SpawnFromPool("projectile", new Vector2(20, 100));
-                frameCount = 0;
-            }
+            base.Update(gameTime); 
         }
     }
 }

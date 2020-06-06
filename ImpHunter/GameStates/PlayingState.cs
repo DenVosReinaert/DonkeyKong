@@ -14,18 +14,15 @@ namespace ImpHunter.GameStates
 
         public GameObjectList ladders;
 
-
+        public GameObjectList projectiles;
 
         public Player player;
         public Projectile projectile;
-
-        public ObjectPool objectPooler;
 
 
 
         public PlayingState()
         {
-            objectPooler = new ObjectPool();
 
 
 
@@ -35,6 +32,8 @@ namespace ImpHunter.GameStates
             Add(finishPlatformRow = new GameObjectList());
 
             Add(ladders = new GameObjectList());
+
+            Add(projectiles = new GameObjectList());
 
             #endregion
         }
@@ -52,16 +51,16 @@ namespace ImpHunter.GameStates
 
 
 
-            foreach (GameObject projectile in objectPooler.projectiles.objectPool)
+            foreach (Projectile projectile in projectiles.Children)
             {
-                if (CollidesWithPlatform(projectile as RotatingSpriteGameObject, out float collidedY2))
+                if (CollidesWithPlatform(projectile, out float collidedY2))
                 {
                     projectile.grounded = true;
                 }
                 else projectile.grounded = false;
 
 
-                if((projectile as RotatingSpriteGameObject).CollidesWith(player))
+                if(projectile.CollidesWith(player))
                 {
                     Console.WriteLine("Get Fucked!");
                 }
@@ -77,10 +76,10 @@ namespace ImpHunter.GameStates
                     player.grounded = true;
                 }
 
-                foreach (GameObject projectile in objectPooler.projectiles.objectPool)
-                    if ((projectile as RotatingSpriteGameObject).CollidesWith(platform) && projectile.Position.Y + (projectile as RotatingSpriteGameObject).Sprite.Height/2 > platform.Position.Y && projectile.Position.Y + (projectile as RotatingSpriteGameObject).Sprite.Height/2 < platform.Position.Y + platform.Sprite.Height)
+                foreach (Projectile projectile in projectiles.Children)
+                    if (projectile.CollidesWith(platform) && projectile.Position.Y + projectile.Sprite.Height/2 > platform.Position.Y && projectile.Position.Y + (projectile as RotatingSpriteGameObject).Sprite.Height/2 < platform.Position.Y + platform.Sprite.Height)
                     {
-                        projectile.Position = new Vector2(projectile.Position.X, platform.Position.Y - (projectile as RotatingSpriteGameObject).Sprite.Height/2 + 1);
+                        projectile.Position = new Vector2(projectile.Position.X, platform.Position.Y - projectile.Sprite.Height/2 + 1);
                         projectile.grounded = true;
                     }
 

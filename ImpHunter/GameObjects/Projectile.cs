@@ -11,8 +11,10 @@ namespace ImpHunter.GameObjects
     {
         private float moveSpeed;
 
-        public Projectile() : base("projectile-temp")
+        public Projectile(Vector2 startPosition) : base("projectile-temp")
         {
+            position = startPosition;
+
             origin = Sprite.Center;
 
             moveSpeed = 200;
