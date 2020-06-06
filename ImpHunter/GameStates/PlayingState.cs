@@ -31,17 +31,17 @@ namespace ImpHunter.GameStates
             {
                 player.grounded = true;
             }
+            else player.grounded = false;
 
 
 
             foreach (Platform platform in basePlatformRow.Children.Concat(finishPlatformRow.Children).Concat(platformRows.Children))
                 if (player.CollidesWith(platform) && player.Position.Y + player.Sprite.Height > platform.Position.Y && player.Position.Y + player.Sprite.Height < platform.Position.Y + platform.Sprite.Height)
                 {
-                    player.Position = new Vector2(player.Position.X, platform.Position.Y - player.Sprite.Height);
+                    player.Position = new Vector2(player.Position.X, platform.Position.Y - player.Sprite.Height + 1);
                     player.grounded = true;
                 }
 
-            player.grounded = false;
         }
 
         private bool CollidesWithPlatform(SpriteGameObject obj, out float collidedY)
