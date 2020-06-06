@@ -16,22 +16,25 @@ namespace ImpHunter.GameStates
         public Level1()
         {
 
+            
+
             for(int i = 0; i < 16; i++)
             {
                 basePlatformRow.Add(new Platform(new Vector2(50 * i, 780)));
-            }
 
-            for(int j = 0; j < 10; j++)
-            {
-                finishPlatformRow.Add(new Platform(new Vector2(50 * j, 160)));
-            }
+                if (i < 3)
+                    ladders.Add(new Ladder(new Vector2(600 ,740 - 40*i)));
 
-            for(int k = 0; k < 13; k++)
-            {
-                platformRows.Add(new Platform(new Vector2(50 * k, 640 + k*2)));
-                platformRows.Add(new Platform(new Vector2(800 - 50 * k, 520 + k * 2)));
-                platformRows.Add(new Platform(new Vector2(50 * k, 420 - k * 2)));
-                platformRows.Add(new Platform(new Vector2(800 - 50 * k, 260 + k * 2)));
+                if(i < 10)
+                    finishPlatformRow.Add(new Platform(new Vector2(50 * i, 160)));
+
+                if(i < 13)
+                {
+                    platformRows.Add(new Platform(new Vector2(50 * i, 640 + i * 2)));
+                    platformRows.Add(new Platform(new Vector2(800 - 50 * i, 520 + i * 2)));
+                    platformRows.Add(new Platform(new Vector2(50 * i, 420 - i * 2)));
+                    platformRows.Add(new Platform(new Vector2(800 - 50 * i, 260 + i * 2)));
+                }
             }
 
             Add(player = new Player(new Vector2(0, 500)));

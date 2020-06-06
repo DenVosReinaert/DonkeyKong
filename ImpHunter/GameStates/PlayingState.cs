@@ -1,5 +1,6 @@
 ﻿using ImpHunter.GameObjects;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Linq;
 
@@ -43,11 +44,12 @@ namespace ImpHunter.GameStates
             base.Update(gameTime);
 
             #region Player & Projectile Platfrom Collision
-            if (CollidesWithPlatform(player, out float collidedY))
+            if (CollidesWithPlatform(player, out float collidedY) || player.climbing)
             {
                 player.grounded = true;
             }
             else player.grounded = false;
+
 
 
 
@@ -60,26 +62,26 @@ namespace ImpHunter.GameStates
                 else projectile.grounded = false;
 
 
-                if(projectile.CollidesWith(player))
+                if (projectile.CollidesWith(player))
                 {
                     Console.WriteLine("Get Fucked!");
                 }
             }
 
 
-
             foreach (Platform platform in basePlatformRow.Children.Concat(finishPlatformRow.Children).Concat(platformRows.Children))
             {
-                if (player.CollidesWith(platform) && player.Position.Y + player.Sprite.Height > platform.Position.Y && player.Position.Y + player.Sprite.Height < platform.Position.Y + platform.Sprite.Height)
-                {
-                    player.Position = new Vector2(player.Position.X, platform.Position.Y - player.Sprite.Height + 1);
-                    player.grounded = true;
-                }
+                if (!player.climbing)
+                    if (player.CollidesWith(platform) && player.Position.Y + player.Sprite.Height > platform.Position.Y && player.Position.Y + player.Sprite.Height < platform.Position.Y + platform.Sprite.Height)
+                    {
+                        player.Position = new Vector2(player.Position.X, platform.Position.Y - player.Sprite.Height + 1);
+                        player.grounded = true;
+                    }
 
                 foreach (Projectile projectile in projectiles.Children)
-                    if (projectile.CollidesWith(platform) && projectile.Position.Y + projectile.Sprite.Height/2 > platform.Position.Y && projectile.Position.Y + (projectile as RotatingSpriteGameObject).Sprite.Height/2 < platform.Position.Y + platform.Sprite.Height)
+                    if (projectile.CollidesWith(platform) && projectile.Position.Y + projectile.Sprite.Height / 2 > platform.Position.Y && projectile.Position.Y + (projectile as RotatingSpriteGameObject).Sprite.Height / 2 < platform.Position.Y + platform.Sprite.Height)
                     {
-                        projectile.Position = new Vector2(projectile.Position.X, platform.Position.Y - projectile.Sprite.Height/2 + 1);
+                        projectile.Position = new Vector2(projectile.Position.X, platform.Position.Y - projectile.Sprite.Height / 2 + 1);
                         projectile.grounded = true;
                     }
 
@@ -109,5 +111,20 @@ namespace ImpHunter.GameStates
             return collided;
         }
 
+
+        public override void HandleInput(InputHelper inputHelper)
+        {
+            base.HandleInput(inputHelper);
+
+            foreach (Ladder ladder in ladders.Children)
+            {
+                if (player.CollidesWith(ladder))
+                {
+                    if ((inputHelper.IsKeyDown(Keys.W) || inputHelper.IsKeyDown(Keys.S)) && player.Position.Y + player.Sprite.Height < GameEnvironment.Screen.Y - 9)
+                        player.climbing = true;
+                }
+                else player.climbing = false;
+            }
+        }
     }
 }

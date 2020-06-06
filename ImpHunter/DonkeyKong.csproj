@@ -60,6 +60,7 @@
     <Compile Include="GameManagement\TextGameObject.cs" />
     <Compile Include="DonkeyKong.cs" />
     <Compile Include="GameObjects\Enemy.cs" />
+    <Compile Include="GameObjects\Ladder.cs" />
     <Compile Include="GameObjects\Platform.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Projectile.cs" />
