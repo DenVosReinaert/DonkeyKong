@@ -9,18 +9,30 @@ namespace ImpHunter.GameObjects
 {
     class Projectile : RotatingSpriteGameObject
     {
-        public Projectile() : base("projectile-temp")
-        {
+        private float moveSpeed;
 
+        public Projectile(Vector2 startPosition) : base("projectile-temp")
+        {
+            position = startPosition;
+            origin = Sprite.Center;
+
+            moveSpeed = 200;
+
+            velocity.X = moveSpeed;
+
+ 
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            if(position.X + Sprite.Width/2 > GameEnvironment.Screen.X || position.X - Sprite.Width / 2 < 0)
+            Degrees += 360f/moveSpeed * 2;
+
+            if (position.X + Sprite.Width/2 > GameEnvironment.Screen.X || position.X - Sprite.Width / 2 < 0)
             {
                 velocity.X = -velocity.X;
+                moveSpeed = -moveSpeed;
             }
 
             if (grounded)

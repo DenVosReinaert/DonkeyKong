@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace ImpHunter.GameObjects
 {
-    class Player : SpriteGameObject
+    public class Player : SpriteGameObject
     {
         Vector2 moveDir;
         private float moveSpeed;
         private float jumpForce;
 
         public bool climbing = false;
-        public Player() : base("player-temp")
+        public Player(Vector2 startPosition) : base("player-temp")
         {
             moveSpeed = 2;
             jumpForce = 4;
 
-            position = new Vector2(0, 500);
+            position = startPosition;
         }
 
         public override void Update(GameTime gameTime)

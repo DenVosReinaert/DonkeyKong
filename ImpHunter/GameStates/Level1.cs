@@ -10,9 +10,10 @@ namespace ImpHunter.GameStates
 {
     class Level1 : PlayingState
     {
-
+        Projectile projectile;
         public Level1()
         {
+
             for(int i = 0; i < 16; i++)
             {
                 basePlatformRow.Add(new Platform(new Vector2(50 * i, 780)));
@@ -30,6 +31,10 @@ namespace ImpHunter.GameStates
                 platformRows.Add(new Platform(new Vector2(50 * k, 420 - k * 2)));
                 platformRows.Add(new Platform(new Vector2(800 - 50 * k, 260 + k * 2)));
             }
+
+            Add(player = new Player(new Vector2(0, 500)));
+
+            projectiles.Add(projectile = new Projectile(new Vector2(20, 100)));
         }
 
         public override void Update(GameTime gameTime)
