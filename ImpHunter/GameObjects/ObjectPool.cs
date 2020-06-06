@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -6,23 +7,48 @@ namespace ImpHunter.GameObjects
 {
     public class ObjectPool : GameObject
     {
+        #region Object Pools
+
+        #region Projectile
+        public Pool projectiles;
+        public Projectile projectile;
+        #endregion
+
+        #endregion
 
         public class Pool
         {
             public string tag;
-            public GameObject prefab;
             public int size;
+
+            public GameObjectList objList = new GameObjectList();
             public Queue<GameObject> objectPool = new Queue<GameObject>();
         }
 
-        public List<Pool> objPools;
+        public List<Pool> objPools = new List<Pool>();
         public Dictionary<string, Queue<GameObject>> poolDictionary;
 
 
         public ObjectPool()
         {
-            objPools = new List<Pool>();
-            //public Queue<GameObject> objectPool;
+            #region Pool Instantiation
+
+            #region Projectile Pool
+
+
+            objPools.Add(projectiles = new Pool());
+
+            projectiles.tag = "projectile";
+            projectiles.size = 2;
+
+
+
+            #endregion
+
+            #endregion
+
+
+
 
             poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
@@ -30,10 +56,17 @@ namespace ImpHunter.GameObjects
             {
                 pool.objectPool = new Queue<GameObject>();
 
-                for (int i = 0; i < pool.size; i++)
+                #region Pool Object List Population
+                if(pool.tag == "projectile")
+                    for (int i = 0; i < projectiles.size; i++)
+                    {
+                        pool.objList.Add(projectile = new Projectile());
+                    }
+                Console.WriteLine(pool.objList.Children.Count);
+                #endregion
+
+                foreach (GameObject obj in pool.objList.Children)
                 {
-                    GameObject obj = pool.prefab;
-                    obj.Visible = false;
                     pool.objectPool.Enqueue(obj);
                 }
 
