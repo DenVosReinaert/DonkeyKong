@@ -10,9 +10,11 @@ namespace ImpHunter.GameStates
         {
             baseFrameCount = 120;
 
-            startTimeScore = 120;
+            startTimeScore = 30;
 
             barrel.Position = new Vector2(100, 780 - barrel.Sprite.Height);
+            victory.Position = new Vector2(50, 160-victory.Sprite.Height);
+
             for (int i = 0; i < 16; i++)
             {
                 basePlatformRow.Add(new Platform(new Vector2(50 * i, 780)));

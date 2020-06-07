@@ -29,10 +29,12 @@ namespace DonkeyKong
             // TODO: use this.Content to load your game content here
             GameStateManager.AddGameState("Level1", new Level1());
 
+            GameStateManager.AddGameState("TitleScreenState", new TitleScreenState());
             GameStateManager.AddGameState("WinState", new WinState());
+            GameStateManager.AddGameState("GameOverState", new GameOverState());
 
 
-            GameStateManager.SwitchTo("Level1");
+            GameStateManager.SwitchTo("TitleScreenState");
         }
 
     }

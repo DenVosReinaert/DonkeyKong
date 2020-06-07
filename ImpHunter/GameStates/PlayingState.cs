@@ -35,6 +35,7 @@ namespace ImpHunter.GameStates
         private int projectileQueueSize = 12;
 
         public SpriteGameObject barrel;
+        public SpriteGameObject victory;
 
         public int frameCount;
         public int baseFrameCount;
@@ -62,6 +63,7 @@ namespace ImpHunter.GameStates
             Add(finishPlatformRow = new GameObjectList());
 
             Add(barrel = new SpriteGameObject("barrel-temp"));
+            Add(victory = new SpriteGameObject("victory-temp"));
 
             Add(ladders = new GameObjectList());
 
@@ -84,8 +86,6 @@ namespace ImpHunter.GameStates
                 projectile.Visible = false;
                 projectileQueue.Enqueue(projectile);
             }
-
-            Reset();
         }
 
         public override void Update(GameTime gameTime)
@@ -101,7 +101,6 @@ namespace ImpHunter.GameStates
             if (timeScore <= 0)
             {
                 Die();
-                //GAME OVER!
             }
 
             scoreText.Text = timeScore.ToString();
@@ -133,7 +132,7 @@ namespace ImpHunter.GameStates
 
                     if (lives.Children.Count == 0)
                     {
-                        //GAME OVER!
+                        Die();
                     }
                 }
 
@@ -165,6 +164,12 @@ namespace ImpHunter.GameStates
             }
 
             #endregion
+
+            finalScore = timeScore;
+
+            if (player.CollidesWith(victory))
+                GameEnvironment.GameStateManager.SwitchTo("WinState");
+
 
         }
 
@@ -247,19 +252,21 @@ namespace ImpHunter.GameStates
 
         public void Die()
         {
-            //SWITCH GAME STATES
+            Reset();
+            GameEnvironment.GameStateManager.SwitchTo("GameOverState");
         }
 
         public void Win()
         {
-            finalScore = timeScore;
+
             GameEnvironment.GameStateManager.SwitchTo("WinState");
         }
 
-        public void Reset()
+        public override void Reset()
         {
-            lives.Children.Clear();
+            base.Reset();
 
+            lives.Children.Clear();
             for (int i = 0; i < 3; i++)
             {
                 lives.Add(new RotatingSpriteGameObject("life-temp"));
@@ -271,9 +278,9 @@ namespace ImpHunter.GameStates
 
             player.Position = resetPoint;
 
-            foreach(Projectile projectile in projectileList.Children)
+            foreach (Projectile projectile in projectileList.Children)
             {
-                projectile.Visible = false;
+                projectileQueue.Enqueue(projectile);
                 projectile.Position = new Vector2(-1000, -1000);
             }
 
