@@ -136,6 +136,7 @@ namespace ImpHunter.GameStates
                     }
                 }
 
+
                 if (projectile.CollidesWith(barrel))
                 {
                     projectile.Visible = false;
