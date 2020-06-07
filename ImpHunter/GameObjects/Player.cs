@@ -14,7 +14,7 @@ namespace ImpHunter.GameObjects
         private float moveSpeed;
         private float jumpForce;
 
-        public bool climbing = false;
+        public bool climbingUp, climbingDown;
         public Player(Vector2 startPosition) : base("player-temp")
         {
             moveSpeed = 2;
@@ -36,11 +36,25 @@ namespace ImpHunter.GameObjects
                 gravity = 0;
             }
 
-            if (!climbing && !grounded)
+            if ((!climbingUp || !climbingDown) && !grounded)
             {
                 gravity += 0.1f;
                 position.Y += gravity;
             }
+
+            #region Climbing controls
+            if (climbingUp)
+            {
+                Console.WriteLine("Look ma! no hands!");
+                moveDir.Y = -1;
+            }
+            else if (climbingDown)
+            {
+                Console.WriteLine("Look ma! no hands!");
+                moveDir.Y = 1;
+            }
+            else moveDir.Y = 0;
+            #endregion
         }
 
 
@@ -55,13 +69,7 @@ namespace ImpHunter.GameObjects
                 moveDir.X = 1;
             else moveDir.X = 0;
 
-            #region Climbing controls
-            if (climbing && inputHelper.IsKeyDown(Keys.W))
-                moveDir.Y = -1;
-            else if (climbing && inputHelper.IsKeyDown(Keys.S))
-                moveDir.Y = 1;
-            else moveDir.Y = 0;
-            #endregion
+
             #endregion
 
             if (inputHelper.KeyPressed(Keys.Space) && grounded)

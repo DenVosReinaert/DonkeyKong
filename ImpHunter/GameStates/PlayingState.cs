@@ -44,7 +44,7 @@ namespace ImpHunter.GameStates
             base.Update(gameTime);
 
             #region Player & Projectile Platfrom Collision
-            if (CollidesWithPlatform(player, out float collidedY) || player.climbing)
+            if (CollidesWithPlatform(player, out float collidedY) || player.climbingUp || player.climbingDown)
             {
                 player.grounded = true;
             }
@@ -71,7 +71,7 @@ namespace ImpHunter.GameStates
 
             foreach (Platform platform in basePlatformRow.Children.Concat(finishPlatformRow.Children).Concat(platformRows.Children))
             {
-                if (!player.climbing)
+                if (!player.climbingUp && !player.climbingDown)
                     if (player.CollidesWith(platform) && player.Position.Y + player.Sprite.Height > platform.Position.Y && player.Position.Y + player.Sprite.Height < platform.Position.Y + platform.Sprite.Height)
                     {
                         player.Position = new Vector2(player.Position.X, platform.Position.Y - player.Sprite.Height + 1);
@@ -88,6 +88,7 @@ namespace ImpHunter.GameStates
             }
 
             #endregion
+            
         }
 
         private bool CollidesWithPlatform(SpriteGameObject obj, out float collidedY)
@@ -118,12 +119,39 @@ namespace ImpHunter.GameStates
 
             foreach (Ladder ladder in ladders.Children)
             {
+
+
                 if (player.CollidesWith(ladder))
                 {
-                    if ((inputHelper.IsKeyDown(Keys.W) || inputHelper.IsKeyDown(Keys.S)) && player.Position.Y + player.Sprite.Height < GameEnvironment.Screen.Y - 9)
-                        player.climbing = true;
+
+
+                    if (inputHelper.IsKeyDown(Keys.W))
+                    {
+                        player.climbingDown = false;
+                        player.climbingUp = true;
+                        ladder.beingClimbed = true;
+                    }
+                    else if (inputHelper.IsKeyDown(Keys.S))
+                    {
+                        player.climbingUp = false;
+                        player.climbingDown = true;
+                        ladder.beingClimbed = true;
+                    }
+                    else
+                    {
+                        player.climbingDown = false;
+                        player.climbingUp = false;
+                    }
                 }
-                else player.climbing = false;
+                else ladder.beingClimbed = false;
+
+                if (ladder.beingClimbed)
+                    return;
+                else if (!ladder.beingClimbed && (player.climbingUp || player.climbingDown))
+                {
+                    player.climbingDown = false;
+                    player.climbingUp = false;
+                }
             }
         }
     }
