@@ -12,8 +12,11 @@ namespace ImpHunter.GameStates
 
             startTimeScore = 120;
 
-            barrel.Position = new Vector2(100, 780 - barrel.Sprite.Height);
-            victory.Position = new Vector2(50, 160-victory.Sprite.Height);
+            barrel0.Position = new Vector2(100, 780 - barrel0.Sprite.Height);
+            barrel1.Position = new Vector2(-100, -100);
+            victory.Position = new Vector2(50, 160 - victory.Sprite.Height);
+
+            timeUp.Position = new Vector2(0, 580);
 
             for (int i = 0; i < 16; i++)
             {

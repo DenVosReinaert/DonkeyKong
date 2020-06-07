@@ -49,10 +49,12 @@ namespace ImpHunter.GameStates
         {
             base.HandleInput(inputHelper);
 
+            
             if(inputHelper.AnyKeyPressed)
             {
                 GameEnvironment.GameStateManager.SwitchTo("Level1");
             }
+            
         }
 
     }

@@ -16,6 +16,8 @@ namespace ImpHunter.GameStates
         public GameObjectList platformRows;
         public GameObjectList finishPlatformRow;
 
+        public GameObjectList barrels;
+
         public GameObjectList ladders;
 
         public GameObjectList projectileList;
@@ -32,10 +34,14 @@ namespace ImpHunter.GameStates
 
         public Projectile projectile;
         public Queue<Projectile> projectileQueue = new Queue<Projectile>();
-        private int projectileQueueSize = 12;
+        public int projectileQueueSize = 60;
 
-        public SpriteGameObject barrel;
         public SpriteGameObject victory;
+
+        public SpriteGameObject barrel0;
+        public SpriteGameObject barrel1;
+
+        public SpriteGameObject timeUp;
 
         public int frameCount;
         public int baseFrameCount;
@@ -62,7 +68,11 @@ namespace ImpHunter.GameStates
             Add(platformRows = new GameObjectList());
             Add(finishPlatformRow = new GameObjectList());
 
-            Add(barrel = new SpriteGameObject("barrel-temp"));
+            Add(barrels = new GameObjectList());
+            
+            barrels.Add(barrel0 = new SpriteGameObject("barrel-temp"));
+            barrels.Add(barrel1 = new SpriteGameObject("barrel-temp"));
+
             Add(victory = new SpriteGameObject("victory-temp"));
 
             Add(ladders = new GameObjectList());
@@ -72,6 +82,7 @@ namespace ImpHunter.GameStates
             Add(lives = new GameObjectList());
 
             Add(player = new Player());
+            Add(timeUp = new SpriteGameObject("timeup-temp"));
 
 
             #endregion
@@ -112,7 +123,11 @@ namespace ImpHunter.GameStates
             }
             else player.grounded = false;
 
-
+            if(player.CollidesWith(timeUp) && timeUp.Visible)
+            {
+                timeScore += 200;
+                timeUp.Visible = false;
+            }
 
 
             foreach (Projectile projectile in projectileList.Children)
@@ -126,17 +141,10 @@ namespace ImpHunter.GameStates
 
                 if (projectile.CollidesWith(player))
                 {
-                    player.Position = resetPoint;
-                    if (lives.Children.Count != 0)
-                        lives.Children.Remove(lives.Children[lives.Children.Count - 1]);
-
-                    if (lives.Children.Count == 0)
-                    {
-                        Die();
-                    }
+                    Damage();
                 }
 
-
+                foreach(SpriteGameObject barrel in barrels.Children)
                 if (projectile.CollidesWith(barrel))
                 {
                     projectile.Visible = false;
@@ -171,6 +179,11 @@ namespace ImpHunter.GameStates
             if (player.CollidesWith(victory))
                 GameEnvironment.GameStateManager.SwitchTo("WinState");
 
+
+            if(player.Position.Y > GameEnvironment.Screen.Y)
+            {
+                Damage();
+            }
 
         }
 
@@ -257,6 +270,18 @@ namespace ImpHunter.GameStates
             GameEnvironment.GameStateManager.SwitchTo("GameOverState");
         }
 
+        public void Damage()
+        {
+            player.Position = resetPoint;
+            if (lives.Children.Count != 0)
+                lives.Children.Remove(lives.Children[lives.Children.Count - 1]);
+
+            if (lives.Children.Count == 0)
+            {
+                Die();
+            }
+        }
+
         public void Win()
         {
 
@@ -276,6 +301,8 @@ namespace ImpHunter.GameStates
             }
 
             timeScore = startTimeScore;
+
+            timeUp.Visible = true;
 
             player.Position = resetPoint;
 

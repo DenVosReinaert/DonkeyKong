@@ -66,7 +66,9 @@
     <Compile Include="GameObjects\Projectile.cs" />
     <Compile Include="GameStates\GameOverState.cs" />
     <Compile Include="GameStates\Level1.cs" />
+    <Compile Include="GameStates\Level2.cs" />
     <Compile Include="GameStates\PlayingState.cs" />
+    <Compile Include="GameStates\ThankYouForPlayingState.cs" />
     <Compile Include="GameStates\TitleScreenState.cs" />
     <Compile Include="GameStates\WinState.cs" />
     <Compile Include="Program.cs" />
@@ -94,6 +96,7 @@
     <Content Include="Content\platform-temp.png" />
     <Content Include="Content\player-temp.png" />
     <Content Include="Content\projectile-temp.png" />
+    <Content Include="Content\timeup-temp.png" />
     <Content Include="Content\victory-temp.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
