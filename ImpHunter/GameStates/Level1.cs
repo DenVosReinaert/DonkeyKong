@@ -8,7 +8,9 @@ namespace ImpHunter.GameStates
 
         public Level1()
         {
-            frameCount = 120;
+            baseFrameCount = 120;
+
+            startTimeScore = 120;
 
             barrel.Position = new Vector2(100, 780 - barrel.Sprite.Height);
             for (int i = 0; i < 16; i++)
@@ -47,13 +49,9 @@ namespace ImpHunter.GameStates
 
             }
 
-
-
-            Add(player = new Player());
-
             resetPoint = new Vector2(0, 780 - player.Sprite.Height);
 
-            player.Position = resetPoint;
+            Reset();
         }
 
         public override void Update(GameTime gameTime)

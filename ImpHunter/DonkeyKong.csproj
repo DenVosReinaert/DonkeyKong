@@ -64,8 +64,11 @@
     <Compile Include="GameObjects\Platform.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameObjects\Projectile.cs" />
+    <Compile Include="GameStates\GameOverState.cs" />
     <Compile Include="GameStates\Level1.cs" />
     <Compile Include="GameStates\PlayingState.cs" />
+    <Compile Include="GameStates\TitleScreenState.cs" />
+    <Compile Include="GameStates\WinState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -23,8 +23,13 @@ namespace DonkeyKong
             Screen = new Point(800, 800);
             ApplyResolutionSettings();
 
+
+
+
             // TODO: use this.Content to load your game content here
             GameStateManager.AddGameState("Level1", new Level1());
+
+            GameStateManager.AddGameState("WinState", new WinState());
 
 
             GameStateManager.SwitchTo("Level1");

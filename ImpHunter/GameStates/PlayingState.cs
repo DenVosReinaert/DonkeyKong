@@ -37,10 +37,14 @@ namespace ImpHunter.GameStates
         public SpriteGameObject barrel;
 
         public int frameCount;
+        public int baseFrameCount;
 
-        public int timeScore = 300;
+        public int startTimeScore;
+        public int timeScore;
         private int scoreFramecount;
         private TextGameObject scoreText;
+
+        public static int finalScore = new int();
 
 
 
@@ -49,7 +53,8 @@ namespace ImpHunter.GameStates
         public PlayingState()
         {
             Add(new SpriteGameObject("MaliciousCompliance-temp"));
-            Add(scoreText);
+            Add(scoreText = new TextGameObject("GameFont", 1));
+            scoreText.Position = new Vector2(710, 0);
 
             #region GameObjectLists
             Add(basePlatformRow = new GameObjectList());
@@ -64,12 +69,7 @@ namespace ImpHunter.GameStates
 
             Add(lives = new GameObjectList());
 
-            for (int i = 0; i < 3; i++)
-            {
-                lives.Add(new RotatingSpriteGameObject("life-temp"));
-                (lives.Children[i] as RotatingSpriteGameObject).Degrees = 45;
-                lives.Children[i].Position = new Vector2(30 + (lives.Children[i] as RotatingSpriteGameObject).Sprite.Width * i, 0);
-            }
+            Add(player = new Player());
 
 
             #endregion
@@ -84,6 +84,8 @@ namespace ImpHunter.GameStates
                 projectile.Visible = false;
                 projectileQueue.Enqueue(projectile);
             }
+
+            Reset();
         }
 
         public override void Update(GameTime gameTime)
@@ -98,8 +100,11 @@ namespace ImpHunter.GameStates
             }
             if (timeScore <= 0)
             {
+                Die();
                 //GAME OVER!
             }
+
+            scoreText.Text = timeScore.ToString();
 
             #region Player & Projectile Platfrom Collision
             if (CollidesWithPlatform(player, out float collidedY) || player.climbingUp || player.climbingDown)
@@ -238,6 +243,41 @@ namespace ImpHunter.GameStates
                 projectile.Position = spawnPosition;
             }
 
+        }
+
+        public void Die()
+        {
+            //SWITCH GAME STATES
+        }
+
+        public void Win()
+        {
+            finalScore = timeScore;
+            GameEnvironment.GameStateManager.SwitchTo("WinState");
+        }
+
+        public void Reset()
+        {
+            lives.Children.Clear();
+
+            for (int i = 0; i < 3; i++)
+            {
+                lives.Add(new RotatingSpriteGameObject("life-temp"));
+                (lives.Children[i] as RotatingSpriteGameObject).Degrees = 45;
+                lives.Children[i].Position = new Vector2(30 + (lives.Children[i] as RotatingSpriteGameObject).Sprite.Width * i, 0);
+            }
+
+            timeScore = startTimeScore;
+
+            player.Position = resetPoint;
+
+            foreach(Projectile projectile in projectileList.Children)
+            {
+                projectile.Visible = false;
+                projectile.Position = new Vector2(-1000, -1000);
+            }
+
+            frameCount = baseFrameCount;
         }
     }
 }
