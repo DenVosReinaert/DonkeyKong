@@ -86,8 +86,11 @@ namespace ImpHunter.GameStates
 
         public static void NextLevel()
         {
-            currentLevel++;
-            GameEnvironment.GameStateManager.SwitchTo("Level" + currentLevel.ToString());
+            if (currentLevel < 1)
+            {
+                currentLevel++;
+                GameEnvironment.GameStateManager.SwitchTo("Level" + currentLevel.ToString());
+            }
         }
 
 

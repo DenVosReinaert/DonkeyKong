@@ -10,7 +10,7 @@ namespace ImpHunter.GameStates
         {
             baseFrameCount = 120;
 
-            startTimeScore = 30;
+            startTimeScore = 120;
 
             barrel.Position = new Vector2(100, 780 - barrel.Sprite.Height);
             victory.Position = new Vector2(50, 160-victory.Sprite.Height);
