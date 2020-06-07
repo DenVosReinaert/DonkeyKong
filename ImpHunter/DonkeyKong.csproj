@@ -77,8 +77,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\barrel-temp.png" />
     <Content Include="Content\boss-temp.png" />
     <Content Include="Content\ladder-temp.png" />
+    <Content Include="Content\life-temp.png" />
+    <Content Include="Content\MaliciousCompliance-temp.png" />
     <Content Include="Content\platform-temp.png" />
     <Content Include="Content\player-temp.png" />
     <Content Include="Content\projectile-temp.png" />
@@ -87,6 +90,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="Content\GameFont.spritefont" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

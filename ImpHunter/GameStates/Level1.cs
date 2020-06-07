@@ -6,13 +6,11 @@ namespace ImpHunter.GameStates
     class Level1 : PlayingState
     {
 
-        private int frameCount;
-
         public Level1()
         {
+            frameCount = 120;
 
-
-
+            barrel.Position = new Vector2(100, 780 - barrel.Sprite.Height);
             for (int i = 0; i < 16; i++)
             {
                 basePlatformRow.Add(new Platform(new Vector2(50 * i, 780)));
@@ -20,15 +18,23 @@ namespace ImpHunter.GameStates
 
                 if (i < 3)
                 {
-                    ladders.Add(new Ladder(new Vector2(600, 740 - 41 * i)));
+
                     ladders.Add(new Ladder(new Vector2(300, 615 - 41 * i)));
-                    ladders.Add(new Ladder(new Vector2(200, 520 - 41 * i)));
+                    ladders.Add(new Ladder(new Vector2(800 - 50, 160 + 41 * i)));
+
                 }
+                ladders.Add(new Ladder(new Vector2(600, 740 - 41 * 2)));
+                ladders.Add(new Ladder(new Vector2(600, 520 - 41 * 3)));
+                ladders.Add(new Ladder(new Vector2(0, 286)));
+
 
 
 
                 if (i < 10)
                     finishPlatformRow.Add(new Platform(new Vector2(50 * i, 160)));
+                finishPlatformRow.Add(new Platform(new Vector2(800 - 50, 160)));
+                finishPlatformRow.Add(new Platform(new Vector2(800 - 50 * 3, 160)));
+
 
                 if (i < 13)
                 {
@@ -37,18 +43,38 @@ namespace ImpHunter.GameStates
                     platformRows.Add(new Platform(new Vector2(50 * i, 420 - i * 2)));
                     platformRows.Add(new Platform(new Vector2(800 - 50 * i, 260 + i * 2)));
                 }
+                platformRows.Add(new Platform(new Vector2(0, 286)));
+
             }
 
 
 
-            Add(player = new Player(new Vector2(0, 500)));
+            Add(player = new Player());
 
-            projectiles.Add(projectile = new Projectile(new Vector2(20, 100)));
+            resetPoint = new Vector2(0, 780 - player.Sprite.Height);
+
+            player.Position = resetPoint;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            frameCount++;
+
+            if (projectileQueue.Count != 0)
+            {
+                if (frameCount > 120)
+                {
+                    SpawnProjectile(new Vector2(20, 130));
+                    frameCount = 0;
+                }
+            }
+            else
+            {
+                SpawnProjectile(new Vector2(20, 130));
+                frameCount = 0;
+            }
         }
     }
 }

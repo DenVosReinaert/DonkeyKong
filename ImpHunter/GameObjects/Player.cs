@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImpHunter.GameObjects
 {
@@ -15,12 +11,10 @@ namespace ImpHunter.GameObjects
         private float jumpForce;
 
         public bool climbingUp, climbingDown;
-        public Player(Vector2 startPosition) : base("player-temp")
+        public Player() : base("player-temp")
         {
-            moveSpeed = 2;
+            moveSpeed = 2.5f;
             jumpForce = 4;
-
-            position = startPosition;
         }
 
         public override void Update(GameTime gameTime)
@@ -31,14 +25,14 @@ namespace ImpHunter.GameObjects
 
             position += moveDir * moveSpeed;
 
-            if(grounded)
+            if (grounded)
             {
                 gravity = 0;
             }
 
             if ((!climbingUp || !climbingDown) && !grounded)
             {
-                gravity += 0.1f;
+                gravity += 0.12f;
                 position.Y += gravity;
             }
 

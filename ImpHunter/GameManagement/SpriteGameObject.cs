@@ -19,7 +19,7 @@ public class SpriteGameObject : GameObject
         {
             sprite = null;
         }
-    }    
+    }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {

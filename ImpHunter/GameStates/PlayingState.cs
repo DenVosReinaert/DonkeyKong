@@ -1,7 +1,7 @@
 ﻿using ImpHunter.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ImpHunter.GameStates
@@ -9,39 +9,97 @@ namespace ImpHunter.GameStates
 
     public class PlayingState : GameObjectList
     {
+        #region GameObjectLists
+
+        #region Public
         public GameObjectList basePlatformRow;
         public GameObjectList platformRows;
         public GameObjectList finishPlatformRow;
 
         public GameObjectList ladders;
 
-        public GameObjectList projectiles;
+        public GameObjectList projectileList;
+        #endregion
+
+        #region Private
+        private GameObjectList lives;
+        #endregion
+
+        #endregion
 
         public Player player;
+        public Vector2 resetPoint = new Vector2();
+
         public Projectile projectile;
+        public Queue<Projectile> projectileQueue = new Queue<Projectile>();
+        private int projectileQueueSize = 12;
+
+        public SpriteGameObject barrel;
+
+        public int frameCount;
+
+        public int timeScore = 300;
+        private int scoreFramecount;
+        private TextGameObject scoreText;
+
+
 
 
 
         public PlayingState()
         {
-
-
+            Add(new SpriteGameObject("MaliciousCompliance-temp"));
+            Add(scoreText);
 
             #region GameObjectLists
             Add(basePlatformRow = new GameObjectList());
             Add(platformRows = new GameObjectList());
             Add(finishPlatformRow = new GameObjectList());
 
+            Add(barrel = new SpriteGameObject("barrel-temp"));
+
             Add(ladders = new GameObjectList());
 
-            Add(projectiles = new GameObjectList());
+            Add(projectileList = new GameObjectList());
+
+            Add(lives = new GameObjectList());
+
+            for (int i = 0; i < 3; i++)
+            {
+                lives.Add(new RotatingSpriteGameObject("life-temp"));
+                (lives.Children[i] as RotatingSpriteGameObject).Degrees = 45;
+                lives.Children[i].Position = new Vector2(30 + (lives.Children[i] as RotatingSpriteGameObject).Sprite.Width * i, 0);
+            }
+
 
             #endregion
+
+            for (int i = 0; i < projectileQueueSize; i++)
+            {
+                projectileList.Add(new Projectile());
+            }
+
+            foreach (Projectile projectile in projectileList.Children)
+            {
+                projectile.Visible = false;
+                projectileQueue.Enqueue(projectile);
+            }
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            scoreFramecount++;
+            if (scoreFramecount >= 60)
+            {
+                timeScore--;
+                scoreFramecount = 0;
+            }
+            if (timeScore <= 0)
+            {
+                //GAME OVER!
+            }
 
             #region Player & Projectile Platfrom Collision
             if (CollidesWithPlatform(player, out float collidedY) || player.climbingUp || player.climbingDown)
@@ -53,7 +111,7 @@ namespace ImpHunter.GameStates
 
 
 
-            foreach (Projectile projectile in projectiles.Children)
+            foreach (Projectile projectile in projectileList.Children)
             {
                 if (CollidesWithPlatform(projectile, out float collidedY2))
                 {
@@ -64,7 +122,21 @@ namespace ImpHunter.GameStates
 
                 if (projectile.CollidesWith(player))
                 {
-                    Console.WriteLine("Get Fucked!");
+                    player.Position = resetPoint;
+                    if (lives.Children.Count != 0)
+                        lives.Children.Remove(lives.Children[lives.Children.Count - 1]);
+
+                    if (lives.Children.Count == 0)
+                    {
+                        //GAME OVER!
+                    }
+                }
+
+                if (projectile.CollidesWith(barrel))
+                {
+                    projectile.Visible = false;
+                    projectile.Position = new Vector2(0, 0);
+                    projectileQueue.Enqueue(projectile);
                 }
             }
 
@@ -78,7 +150,7 @@ namespace ImpHunter.GameStates
                         player.grounded = true;
                     }
 
-                foreach (Projectile projectile in projectiles.Children)
+                foreach (Projectile projectile in projectileList.Children)
                     if (projectile.CollidesWith(platform) && projectile.Position.Y + projectile.Sprite.Height / 2 > platform.Position.Y && projectile.Position.Y + (projectile as RotatingSpriteGameObject).Sprite.Height / 2 < platform.Position.Y + platform.Sprite.Height)
                     {
                         projectile.Position = new Vector2(projectile.Position.X, platform.Position.Y - projectile.Sprite.Height / 2 + 1);
@@ -88,7 +160,7 @@ namespace ImpHunter.GameStates
             }
 
             #endregion
-            
+
         }
 
         private bool CollidesWithPlatform(SpriteGameObject obj, out float collidedY)
@@ -153,6 +225,19 @@ namespace ImpHunter.GameStates
                     player.climbingUp = false;
                 }
             }
+        }
+
+        public void SpawnProjectile(Vector2 spawnPosition)
+        {
+            Projectile projectile;
+            if (projectileQueue.Count != 0)
+            {
+                projectile = projectileQueue.Dequeue();
+                projectile.grounded = true;
+                projectile.Visible = true;
+                projectile.Position = spawnPosition;
+            }
+
         }
     }
 }

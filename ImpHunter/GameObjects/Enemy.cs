@@ -1,11 +1,4 @@
-﻿using ImpHunter.GameStates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ImpHunter.GameObjects
+﻿namespace ImpHunter.GameObjects
 {
 
     class Boss : SpriteGameObject

@@ -16,7 +16,7 @@ public abstract class GameObject : IGameLoopObject
         this.layer = layer;
         this.id = id;
         position = Vector2.Zero;
-        velocity = Vector2.Zero; 
+        velocity = Vector2.Zero;
         visible = true;
     }
 
